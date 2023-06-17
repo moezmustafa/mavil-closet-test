@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Outfit Pairing</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        body {
+            background-color: #9a9a9a;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-container img {
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        .selected {
+            border: 2px solid blue;
+        }
+
+        #outfit {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        #outfit img {
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        nav {
+            background-color: #666;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover {
+            background-color: #999;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+        }
+
+        .outfit {
+            display: inline-block;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .outfit h3 {
+            margin-top: 0;
+        }
+
+        .outfit .pair {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .outfit .pair img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Virtual Closet</h1>
+        <ul>
+            <li><a href="#upload-section">Upload Image</a></li>
+            <li><a href="#make-outfit-section">Make an Outfit</a></li>
+            <li><a href="#choose-outfit-section">Choose an Outfit</a></li>
+        </ul>
+    </nav>
+
+    <section id="upload-section">
+        <h2>Upload Images</h2>
+        <div>
+            <button id="uploadBtn">Upload Image</button>
+            <input type="file" id="upload" style="display: none;">
+        </div>
+        <div id="uploadImages" class="image-container"></div>
+    </section>
+
+    <section id="make-outfit-section" class="hide">
+        <h2>Make an Outfit</h2>
+        <div>
+            <div id="outfitImages" class="image-container"></div>
+            <button id="pairBtn" disabled>Pair Images</button>
+        </div>
+        <div id="outfit">
+            <img id="image1" src="#" alt="Image 1">
+            <img id="image2" src="#" alt="Image 2">
+        </div>
+
+        <button id="saveBtn" disabled>Save Outfit</button>
+    </section>
+
+    <section id="choose-outfit-section" class="hide">
+        <h2>Choose an Outfit</h2>
+        <div id="savedOutfits"></div>
+    </section>
+
+    <script>
+        const uploadBtn = document.getElementById("uploadBtn");
+        const upload = document.getElementById("upload");
+        const uploadImages = document.getElementById("uploadImages");
+        const pairBtn = document.getElementById("pairBtn");
+        const saveBtn = document.getElementById("saveBtn");
+        const outfitImages = document.getElementById("outfitImages");
+        const outfit = document.getElementById("outfit");
+        const image1 = document.getElementById("image1");
+        const image2 = document.getElementById("image2");
+        const savedOutfits = document.getElementById("savedOutfits");
+
+        const selectedImages = [];
+
+        uploadBtn.addEventListener("click", () => {
+            upload.click();
+        });
+
+        upload.addEventListener("change", (event) => {
+            const files = Array.from(event.target.files);
+
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                    const img = document.createElement("img");
+                    img.src = reader.result;
+                    img.alt = "Image " + (index + 1);
+
+                    img.addEventListener("click", () => {
+                        if (img.classList.contains("selected")) {
+                            img.classList.remove("selected");
+                            selectedImages.splice(selectedImages.indexOf(img), 1);
+                        } else {
+                            img.classList.add("selected");
+                            selectedImages.push(img);
+                        }
+
+                        if (selectedImages.length >= 2) {
+                            pairBtn.disabled = false;
+                        } else {
+                            pairBtn.disabled = true;
+                        }
+
+                        saveBtn.disabled = true;
+                        outfit.style.display = "none";
+                    });
+
+                    uploadImages.appendChild(img);
+                    outfitImages.appendChild(img.cloneNode());
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+
+        pairBtn.addEventListener("click", () => {
+            if (selectedImages.length >= 2) {
+                image1.src = selectedImages[0].src;
+                image2.src = selectedImages[1].src;
+                outfit.style.display = "flex";
+                saveBtn.disabled = false;
+            }
+        });
+
+        saveBtn.addEventListener("click", () => {
+            if (selectedImages.length >= 2) {
+                const savedOutfit = document.createElement("div");
+                savedOutfit.classList.add("outfit");
+
+                const outfitNumber = savedOutfits.children.length + 1;
+                savedOutfit.innerHTML = `
+                    <h3>Outfit ${outfitNumber}</h3>
+                    <div class="pair">
+                        // <img src="${selectedImages[0].src}" alt="Image 1">
+                        // <img src="${selectedImages[1].src}" alt="Image 2">
+                    </div>
+                `;
+
+                savedOutfits.appendChild(savedOutfit);
+
+                // Clear selection
+                selectedImages.forEach((img) => img.classList.remove("selected"));
+                selectedImages.length = 0;
+                pairBtn.disabled = true;
+                saveBtn.disabled = true;
+                outfit.style.display = "none";
+            }
+        });
+
+        window.addEventListener("hashchange", () => {
+            const sections = document.querySelectorAll("section");
+
+            sections.forEach((section) => {
+                if (section.id === location.hash.slice(1)) {
+                    section.classList.remove("hide");
+                } else {
+                    section.classList.add("hide");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
