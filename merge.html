@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Outfit Pairing</title>
+    <link rel="stylesheet" href="css/pico.min.css">
+    <style>
+        body {
+            background-color: #9a9a9a;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-container img {
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        .selected {
+            border: 2px solid blue;
+        }
+
+        #outfit {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        #outfit img {
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        nav {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover {
+            background-color: #999;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .outfit {
+            display: inline-block;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .outfit h3 {
+            margin-top: 0;
+        }
+
+        .outfit .pair {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .outfit .pair img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Virtual Closet</h1>
+        <ul>
+            <li><a href="#upload-section">Upload Image</a></li>
+            <li><a href="#make-outfit-section">Make an Outfit</a></li>
+            <li><a href="#choose-outfit-section">Choose an Outfit</a></li>
+        </ul>
+    </nav>
+
+    <section id="upload-section">
+        <h2>Upload Images</h2>
+        <div>
+            <button id="uploadBtn">Upload Image</button>
+            <button id="captureBtn">Capture Image</button>
+            <input type="file" id="upload" style="display: none;">
+            <video id="video" style="display: none;"></video>
+        </div>
+        <div id="uploadImages" class="image-container"></div>
+        <div id="captureImages" class="image-container"></div>
+    </section>
+
+    <section id="make-outfit-section" class="hide">
+        <h2>Make an Outfit</h2>
+        <div>
+            <div id="outfitImages" class="image-container"></div>
+            <button id="pairBtn" disabled>Pair Images</button>
+        </div>
+        <div id="outfit">
+            <img id="image1" src="#" alt="Image 1">
+            <img id="image2" src="#" alt="Image 2">
+        </div>
+        <button id="saveBtn" disabled>Save Outfit</button>
+    </section>
+
+    <section id="choose-outfit-section" class="hide">
+        <h2>Choose an Outfit</h2>
+        <div id="savedOutfits"></div>
+    </section>
+
+    <script>
+        const uploadBtn = document.getElementById("uploadBtn");
+        const captureBtn = document.getElementById("captureBtn");
+        const upload = document.getElementById("upload");
+        const video = document.getElementById("video");
+        const uploadImages = document.getElementById("uploadImages");
+        const captureImages = document.getElementById("captureImages");
+        const pairBtn = document.getElementById("pairBtn");
+        const saveBtn = document.getElementById("saveBtn");
+        const outfitImages = document.getElementById("outfitImages");
+        const outfit = document.getElementById("outfit");
+        const image1 = document.getElementById("image1");
+        const image2 = document.getElementById("image2");
+        const savedOutfits = document.getElementById("savedOutfits");
+
+        const selectedImages = [];
+        const capturedImages = [];
+
+        uploadBtn.addEventListener("click", () => {
+            upload.click();
+        });
+
+        captureBtn.addEventListener("click", async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.style.display = "block";
+                upload.style.display = "none";
+                captureImages.innerHTML = ""; // Clear the existing captured images
+            } catch (error) {
+                console.error("Error accessing camera:", error);
+            }
+        });
+
+        upload.addEventListener("change", (event) => {
+            const files = Array.from(event.target.files);
+
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                    const img = document.createElement("img");
+                    img.src = reader.result;
+                    img.alt = "Image " + (index + 1);
+
+                    img.addEventListener("click", () => {
+                        if (img.classList.contains("selected")) {
+                            img.classList.remove("selected");
+                            selectedImages.splice(selectedImages.indexOf(img), 1);
+                        } else {
+                            img.classList.add("selected");
+                            selectedImages.push(img);
+                        }
+
+                        if (selectedImages.length + capturedImages.length >= 2) {
+                            pairBtn.disabled = false;
+                        } else {
+                            pairBtn.disabled = true;
+                        }
+
+                        saveBtn.disabled = true;
+                        outfit.style.display = "none";
+                    });
+
+                    uploadImages.appendChild(img);
+                    outfitImages.appendChild(img.cloneNode());
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+
+        pairBtn.addEventListener("click", () => {
+            const selectedImageSources = selectedImages.map((img) => img.src);
+            const capturedImageSources = capturedImages.map((img) => img.src);
+            const allImageSources = selectedImageSources.concat(capturedImageSources);
+
+            if (allImageSources.length >= 2) {
+                image1.src = allImageSources[0];
+                image2.src = allImageSources[1];
+                outfit.style.display = "flex";
+                saveBtn.disabled = false;
+            }
+        });
+
+        video.addEventListener("click", () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext("2d");
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const img = document.createElement("img");
+            img.src = canvas.toDataURL();
+            img.alt = "Captured Image";
+            img.addEventListener("click", () => {
+                if (img.classList.contains("selected")) {
+                    img.classList.remove("selected");
+                    capturedImages.splice(capturedImages.indexOf(img), 1);
+                } else {
+                    img.classList.add("selected");
+                    capturedImages.push(img);
+                }
+
+                if (selectedImages.length + capturedImages.length >= 2) {
+                    pairBtn.disabled = false;
+                } else {
+                    pairBtn.disabled = true;
+                }
+
+                saveBtn.disabled = true;
+                outfit.style.display = "none";
+            });
+
+            captureImages.appendChild(img);
+        });
+
+        saveBtn.addEventListener("click", () => {
+            const selectedImageSources = selectedImages.map((img) => img.src);
+            const capturedImageSources = capturedImages.map((img) => img.src);
+            const allImageSources = selectedImageSources.concat(capturedImageSources);
+
+            if (allImageSources.length >= 2) {
+                const savedOutfit = document.createElement("div");
+                savedOutfit.classList.add("outfit");
+
+                const outfitNumber = savedOutfits.children.length + 1;
+                savedOutfit.innerHTML = `
+                    <h3>Outfit ${outfitNumber}</h3>
+                    <div class="pair">
+                        // <img src="${selectedImageSources[0]}" alt="Image 1">
+                        // <img src="${selectedImageSources[1]}" alt="Image 2">
+                        // <img src="${capturedImageSources[0]}" alt="Image 3">
+                    </div>
+                `;
+
+                savedOutfits.appendChild(savedOutfit);
+
+                // Clear selection
+                selectedImages.forEach((img) => img.classList.remove("selected"));
+                capturedImages.forEach((img) => img.classList.remove("selected"));
+                selectedImages.length = 0;
+                capturedImages.length = 0;
+                pairBtn.disabled = true;
+                saveBtn.disabled = true;
+                outfit.style.display = "none";
+            }
+        });
+
+        window.addEventListener("hashchange", () => {
+            const sections = document.querySelectorAll("section");
+
+            sections.forEach((section) => {
+                if (section.id === location.hash.slice(1)) {
+                    section.classList.remove("hide");
+                } else {
+                    section.classList.add("hide");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

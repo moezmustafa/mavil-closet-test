@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Closet App</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <style>
+        /* CSS styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F8F8F8;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #FF69B4;
+            text-align: center;
+            animation: scale 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes scale {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        
+        .upload-button {
+            display: block;
+            width: 200px;
+            height: 50px;
+            background-color: #FF69B4;
+            color: #FFF;
+            text-align: center;
+            line-height: 50px;
+            margin: 20px auto;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .upload-button:hover {
+            background-color: #FF1493;
+        }
+        
+        .clothing-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+        }
+        
+        .clothing-button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #FF69B4;
+            color: #FFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .clothing-button:hover {
+            background-color: #FF1493;
+        }
+        
+        .shapes-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        
+        .shape {
+            position: relative;
+            background-color: #FF69B4;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: beat 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes beat {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+        
+        .shape1 {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .shape2 {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .shape3 {
+            width: 200px;
+            height: 200px;
+        }
+        
+        .shape4 {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .shape5 {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .shape6 {
+            width: 90px;
+            height: 90px;
+        }
+        
+        .nav-bar {
+            background-color: #FF69B4;
+            padding: 10px;
+        }
+        
+        .nav-bar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .nav-bar li {
+            margin: 0 10px;
+        }
+        
+        .nav-bar a {
+            color: #FFF;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-bar a:hover {
+            color: #FF1493;
+        }
+        
+        .carousel-container {
+            margin-top: 50px;
+        }
+        
+        .carousel-slide {
+            width: 100%;
+        }
+        
+        .carousel-image {
+            width: 100%;
+            height: auto;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-bar">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Categories</a></li>
+                <li><a href="#">Outfits</a></li>
+                <li><a href="#">Upload Image</a></li>
+            </ul>
+        </div>
+        
+        <h1>Closet App</h1>
+        
+        <div class="clothing-buttons">
+            <a href="#" class="clothing-button">Headwear</a>
+            <a href="#" class="clothing-button">Footwear</a>
+            <a href="#" class="clothing-button">Top</a>
+            <a href="#" class="clothing-button">Bottom</a>
+        </div>
+        
+        <div class="shapes-container">
+            <div class="shape shape1"></div>
+            <div class="shape shape2"></div>
+            <div class="shape shape3"></div>
+            <div class="shape shape4"></div>
+            <div class="shape shape5"></div>
+            <div class="shape shape6"></div>
+        </div>
+        
+        <div class="carousel-container">
+            <div class="carousel-slide">
+                <img src="image1.jpg" alt="Image 1" class="carousel-image">
+            </div>
+            <div class="carousel-slide">
+                <img src="image2.jpg" alt="Image 2" class="carousel-image">
+            </div>
+            <div class="carousel-slide">
+                <img src="image3.jpg" alt="Image 3" class="carousel-image">
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    <script>
+        // Initialize the carousel
+        $(document).ready(function(){
+            $('.carousel-slide').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 1000,
+                dots: true
+            });
+        });
+    </script>
+</body>
+</html>

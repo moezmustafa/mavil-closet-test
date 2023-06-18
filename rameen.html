@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: beige;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .header {
+            text-align: center;
+            margin: 20px 0;
+            display: inline-block;
+            position: relative;
+        }
+
+        .header:before {
+            content: '';
+            background-color: rgb(240, 255, 245);
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            border: 2px solid black;
+            border-radius: 20px;
+            animation: beat 1s infinite;
+            z-index: -1;
+        }
+
+        @keyframes beat {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pro {
+            text-align: center;
+        }
+ 
+
+       
+        .pro-container {
+            text-align: center;
+            display: flex;
+           
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .pro {
+            width: 250px;
+            min-width: 250px;
+            padding: 10px 12px;
+            border: 1px solid black;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
+            margin: 15px 0;
+            transition: 0.2s ease;
+            position: relative;
+        }
+
+        .pro:hover {
+            box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
+            background-color: green;
+            scale: 1.1;
+            box-shadow: 40px 40px 30px rgba(0, 0, 0, 0.02);
+        }
+
+        .pro img {
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .shopping-cart-icon {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50px;
+            background-color: white;
+            font-weight: 500;
+            color: green;
+            border: 1px solid white;
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+        }
+
+        .shopping-cart-icon:hover {
+            background-color: green;
+            color: white;
+            border: 1px solid green;
+        }
+
+       
+
+        
+
+
+    </style>
+    <title>Document</title>
+</head>
+<body>
+<div class="header">
+    <h2 style="display: inline-block;">Featured Products</h2>
+</div>
+
+<div class="pro-container">
+    <div class="pro">
+        <img src="https://i.pinimg.com/564x/7b/11/02/7b11025cede1c6058f88cab7f05c5cf8.jpg" alt="">
+        <div class="des">
+            <span>PHYTOPHILE OASIS</span>
+            <h5>Button Fern</h5>
+            <h4>$50</h4>
+            <a href="shopping-cart" class="shopping-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+    <div class="pro">
+        <img src="https://i.pinimg.com/564x/9a/56/ef/9a56efb0111f6245d8da03ad56350d73.jpg" alt="">
+        <div class="des">
+            <span>PHYTOPHILE OASIS</span>
+            <h5>Calathea Rattlesnake</h5>
+            <h4>$57</h4>
+            <a href="shopping-cart" class="shopping-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+    <div class="pro">
+        <img src="https://i.pinimg.com/564x/06/83/a1/0683a1c1b79a114e9c6d8273ec20a14c.jpg" alt="">
+        <div class="des">
+            <span>PHYTOPHILE OASIS</span>
+            <h5>Large Majesty Palm</h5>
+            <h4>$61</h4>
+            <a href="shopping-cart" class="shopping-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+    <div class="pro">
+        <img src="https://i.pinimg.com/564x/c8/b3/9f/c8b39f6bc3faf689e295137815951ad4.jpg" alt="">
+        <div class="des">
+            <span>PHYTOPHILE OASIS</span>
+            <h5>Bromeliad Red Guzmania Hope</h5>
+            <h4>$38</h4>
+            <a href="shopping-cart" class="shopping-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+    <div class="pro">
+        <img src="https://i.pinimg.com/564x/bb/3d/cd/bb3dcdd2070aae78db6feac0080a7f93.jpg" alt="">
+        <div class="des">
+            <span>PHYTOPHILE OASIS</span>
+            <h5>Peace Lily Domino</h5>
+            <h4>$49</h4>
+            <a href="shopping-cart" class="shopping-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+    <div class="pro">
+        <img src="https://i.pinimg.com/736x/99/b6/f7/99b6f7d78f8690d95dfbde6a42e819af.jpg" alt="">
+        <div class="des">
+            <span>PHYTOPHILE OASIS</span>
+            <h5>ZZ Plant</h5>
+            <h4>$56</h4>
+            <a href="shopping-cart" class="shopping-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+    <div class="pro">
+        <img src="https://i.pinimg.com/564x/d8/88/35/d88835c413927e3fdbe5b709e275432f.jpg" alt="">
+        <div class="des">
+            <span>PHYTOPHILE OASIS</span>
+            <h5>Tradescantia Zebrina</h5>
+            <h4>$45</h4>
+            <a href="shopping-cart" class="shopping-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+    <div class="pro">
+        <img src="https://i.pinimg.com/564x/7d/94/c5/7d94c5ca82dc9223e1bde2248167fa33.jpg" alt="">
+        <div class="des">
+            <span>PHYTOPHILE OASIS</span>
+            <h5>Spider Plant Variegated</h5>
+            <h4>$63</h4>
+            <a href="shopping-cart" class="shopping-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
